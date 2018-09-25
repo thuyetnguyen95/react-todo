@@ -10,11 +10,12 @@ class App extends Component {
         super(props);
         
         this.state = {
-            data: DummyData,
             listTask: DummyData.items,
             items: [],
             sortKey: null,
         };
+
+        this.Header = React.createRef();
     }
 
     handleSearch = (strSearch = '') => {
@@ -42,6 +43,16 @@ class App extends Component {
         })
     }
 
+    addNewTask = (taskName, taskLevel) => {
+        this.state.listTask.push({
+            id: this.state.listTask.length + 1,
+            name: taskName,
+            level: taskLevel
+        })
+
+        this.setState({ items: this.state.listTask })
+    }
+
     componentDidMount() {
         this.handleSearch();
     }
@@ -59,7 +70,7 @@ class App extends Component {
                     </header>
                 </div>
                 <br />
-                <HeaderBar ahihiSearch={this.handleSearch} ahihiSort={this.handleSort}/>
+                <HeaderBar ahihiSearch={this.handleSearch} ahihiSort={this.handleSort} save={this.addNewTask}/>
                 <br />
                 <List items={items} sort={sortKey} deleteTask={this.deleteTask}/>
             </div>

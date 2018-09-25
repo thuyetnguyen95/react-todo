@@ -15,7 +15,7 @@ class HeaderBar extends Component {
         }
     }
 
-    showFormAdd = () => {
+    toggleFormAdd = () => {
         this.setState({
             isShowForm: !this.state.isShowForm,
             iconAddOrClose: !this.state.iconAddOrClose,
@@ -57,8 +57,16 @@ class HeaderBar extends Component {
         }
     }
 
+    addNewTask = (taskName, taskLevel) => {
+        this.props.save(taskName, taskLevel);
+    }
+
+    reject = () => {
+        this.toggleFormAdd();
+    }
+
     render() {
-        const formAdd = this.state.isShowForm ? <FormAdd /> : '';
+        const formAdd = this.state.isShowForm ? <FormAdd save={this.addNewTask} cancel={this.reject} /> : '';
         const icon = this.state.iconAddOrClose ? 'fa fa-close' : 'fa fa-plus';
         const textForm = this.state.textAddOrClose ? 'Close form' : 'Add new task';
 
@@ -95,7 +103,7 @@ class HeaderBar extends Component {
                         </div>
                     </div>
                     <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                        <button type="button" className="btn btn-info btn-block btn-sm" onClick={this.showFormAdd}>
+                        <button type="button" className="btn btn-info btn-block btn-sm" onClick={this.toggleFormAdd}>
                             <i className={icon}></i> {textForm}
                         </button>
                     </div>
