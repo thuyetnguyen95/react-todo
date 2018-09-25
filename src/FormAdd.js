@@ -4,7 +4,8 @@ class FormAdd extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { taskName: '', taskLevel: 0 };
+        this.state = { taskName: '', taskLevel: 0 , taskSelected: null};
+        console.log(this.props.taskSelected);
     }
 
     saveTask = (event) => {
@@ -28,6 +29,10 @@ class FormAdd extends Component {
 
     handleAddLevel = (level) => {
         this.setState({ taskLevel: parseInt(level.target.value, 10) });
+    }
+
+    componentDidUpdate() {
+        // console.log(this.props.taskSelected);
     }
 
     render() {

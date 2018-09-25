@@ -13,9 +13,10 @@ class App extends Component {
             listTask: DummyData.items,
             items: [],
             sortKey: null,
+            taskSelected: null,
         };
 
-        this.Header = React.createRef();
+        this.headerBar = React.createRef();
     }
 
     handleSearch = (strSearch = '') => {
@@ -32,17 +33,6 @@ class App extends Component {
         this.setState({ sortKey: sortKey })
     }
 
-    deleteTask = (id) => {
-        let ahihi =  this.state.listTask.find((item) => {
-            return item.id === id;
-        })
-
-        this.state.listTask.splice(this.state.listTask.indexOf(ahihi), 1);
-        this.setState({
-            items: this.state.listTask
-        })
-    }
-
     addNewTask = (taskName, taskLevel) => {
         this.state.listTask.push({
             id: this.state.listTask.length + 1,
@@ -53,11 +43,25 @@ class App extends Component {
         this.setState({ items: this.state.listTask })
     }
 
+    editTask = (task) => {
+        // console.log(task);
+        this.setState({ taskSelected: task });
+        this.headerBar.current.showFormEdit(task)
+    }
+
+    deleteTask = (task) => {
+        this.state.listTask.splice(this.state.listTask.indexOf(task), 1);
+        this.setState({
+            items: this.state.listTask
+        })
+    }
+
     componentDidMount() {
         this.handleSearch();
     }
 
     render() {
+        // const taskSelected = this.state.taskSelected;
         let sortKey = this.state.sortKey;
         let items = this.state.items;
 
@@ -70,9 +74,9 @@ class App extends Component {
                     </header>
                 </div>
                 <br />
-                <HeaderBar ahihiSearch={this.handleSearch} ahihiSort={this.handleSort} save={this.addNewTask}/>
+                <HeaderBar ahihiSearch={this.handleSearch} ahihiSort={this.handleSort} save={this.addNewTask} taskSelected={this.state.taskSelected} ref={this.headerBar}/>
                 <br />
-                <List items={items} sort={sortKey} deleteTask={this.deleteTask}/>
+                <List items={items} sort={sortKey} delete={this.deleteTask} edit={this.editTask}/>
             </div>
         );
     }

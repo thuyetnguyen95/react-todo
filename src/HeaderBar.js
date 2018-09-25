@@ -12,7 +12,20 @@ class HeaderBar extends Component {
             strSearch: '',
             strSort: '',
             order: {},
+            taskSelected: null,
         }
+
+        // console.log(this.props.taskSelected)
+    }
+
+    showFormEdit = (taskSelected) => {
+        this.setState({
+            isShowForm: true,
+            iconAddOrClose: true,
+            textAddOrClose: true,
+            taskSelected: taskSelected
+        })
+
     }
 
     toggleFormAdd = () => {
@@ -66,7 +79,8 @@ class HeaderBar extends Component {
     }
 
     render() {
-        const formAdd = this.state.isShowForm ? <FormAdd save={this.addNewTask} cancel={this.reject} /> : '';
+        let taskSelected = this.state.taskSelected;
+        const formAdd = this.state.isShowForm ? <FormAdd save={this.addNewTask} cancel={this.reject} taskSelected={taskSelected}/> : '';
         const icon = this.state.iconAddOrClose ? 'fa fa-close' : 'fa fa-plus';
         const textForm = this.state.textAddOrClose ? 'Close form' : 'Add new task';
 
