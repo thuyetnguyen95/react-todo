@@ -60,15 +60,19 @@ class List extends Component {
         }
     }
 
-    deleteTask = (taskId) => {
-        this.props.deleteTask(taskId);
+    editTask = (task) => {
+        this.props.edit(task);
+    }
+
+    deleteTask = (task) => {
+        this.props.delete(task);
     }
 
     render() {
         let items = this.mapSort(this.props.sort, this.props.items);
         let task = items.map((item, index) => {
             return (
-                <Item key={index} value={item} index={index} deleteTask={this.deleteTask}/>
+                <Item key={index} value={item} index={index} delete={this.deleteTask} edit={this.editTask}/>
             )
         })
 

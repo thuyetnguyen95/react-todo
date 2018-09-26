@@ -18,11 +18,11 @@ class Item extends Component {
     }
 
     editTask = () => {
-        console.log('editTask ', this.props.value.id);
+        this.props.edit(this.props.value)
     }
 
     deleteTask = () => {
-        this.props.deleteTask(this.props.value.id);
+        this.props.delete(this.props.value);
     }
     
     render() {

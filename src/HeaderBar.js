@@ -12,7 +12,21 @@ class HeaderBar extends Component {
             strSearch: '',
             strSort: '',
             order: {},
+            taskSelected: null,
         }
+        this.FormAdd = React.createRef();
+    }
+
+    // first way
+    showFormEdit = (taskSelected) => {
+        this.setState({
+            isShowForm: true,
+            iconAddOrClose: true,
+            textAddOrClose: true,
+            taskSelected: taskSelected
+        }, () => {
+            this.FormAdd.current.fillTaskToEdit(taskSelected);
+        })
     }
 
     toggleFormAdd = () => {
@@ -34,7 +48,7 @@ class HeaderBar extends Component {
         });
     }
 
-    handleCancel = () => {
+    handleCancelSearch = () => {
         this.setState({ strSearch: '' }, () => {
             this.props.ahihiSearch('');
         })
@@ -59,14 +73,17 @@ class HeaderBar extends Component {
 
     addNewTask = (taskName, taskLevel) => {
         this.props.save(taskName, taskLevel);
+        this.toggleFormAdd();
     }
 
-    reject = () => {
+    updateTask = (task) => {
+        this.props.update(task);
         this.toggleFormAdd();
     }
 
     render() {
-        const formAdd = this.state.isShowForm ? <FormAdd save={this.addNewTask} cancel={this.reject} /> : '';
+        let taskSelected = this.state.taskSelected;
+        const formAdd = this.state.isShowForm ? <FormAdd save={this.addNewTask} update={this.updateTask} cancel={this.toggleFormAdd} taskSelected={taskSelected} ref={this.FormAdd}/> : '';
         const icon = this.state.iconAddOrClose ? 'fa fa-close' : 'fa fa-plus';
         const textForm = this.state.textAddOrClose ? 'Close form' : 'Add new task';
 
@@ -81,7 +98,7 @@ class HeaderBar extends Component {
                                     <button className="btn btn-info btn-sm" type="button" onClick={this.handleSearch}>
                                         <i className="fa fa-search"></i> Search
                                 </button>
-                                    <button className="btn btn-warning btn-sm" type="button" onClick={this.handleCancel}>
+                                    <button className="btn btn-warning btn-sm" type="button" onClick={this.handleCancelSearch}>
                                         <i className="fa fa-refresh"></i> Clear
                                 </button>
                                 </span>

@@ -5,6 +5,18 @@ import DummyData from './data';
 import HeaderBar from './HeaderBar';
 import List from './List';
 
+
+/**
+ * WamiDev 26-09-2018
+ * 
+ * I using two different ways for edit function.
+ * The first way, I use [ref] for the component, call child's function and passing data (taskSelected) through it.
+ * Second way, I use [props] and [state] and passing them to child component (It case is normal).
+ * 
+ * If You use the first way You can remove some function or some code has comment [second way] because we not using it.
+ * And if You use second way You can also do the same as above with comment is [first way].
+ */
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -13,34 +25,29 @@ class App extends Component {
             listTask: DummyData.items,
             items: [],
             sortKey: null,
+            taskSelected: null,
+            strSearch: '',
         };
 
-        this.Header = React.createRef();
+        this.headerBar = React.createRef(); // first way
     }
 
     handleSearch = (strSearch = '') => {
-        let items = this.state.listTask.filter((item) => {
+        this.setState({
+            strSearch: strSearch
+        }, () => {
+            let items = this.state.listTask.filter((item) => {
                 let itemName = item.name.toLowerCase();
 
-                return itemName.indexOf(strSearch.toLowerCase()) !== -1;
+                return itemName.indexOf(this.state.strSearch.toLowerCase()) !== -1;
             });
 
-       this.setState({ items: items });
+            this.setState({ items: items });
+        })
     }
 
-    handleSort = (sortKey) => {
+    handleSort = sortKey => {
         this.setState({ sortKey: sortKey })
-    }
-
-    deleteTask = (id) => {
-        let ahihi =  this.state.listTask.find((item) => {
-            return item.id === id;
-        })
-
-        this.state.listTask.splice(this.state.listTask.indexOf(ahihi), 1);
-        this.setState({
-            items: this.state.listTask
-        })
     }
 
     addNewTask = (taskName, taskLevel) => {
@@ -53,11 +60,35 @@ class App extends Component {
         this.setState({ items: this.state.listTask })
     }
 
+    updateTask = task => {
+        let listTask = this.state.listTask;
+        let taskToUpdate = this.state.listTask.find(item => {
+            return item.id === task.id;
+        })
+
+        listTask[listTask.indexOf(taskToUpdate)] = task;
+        this.setState({ items: listTask })
+        this.handleSearch(this.state.strSearch);
+    }
+
+    editTask = task => {
+        // this.setState({ taskSelected: task }); // second
+        this.headerBar.current.showFormEdit(task); // first way
+    }
+
+    deleteTask = task => {
+        this.state.listTask.splice(this.state.listTask.indexOf(task), 1);
+        this.setState({
+            items: this.state.listTask
+        })
+    }
+
     componentDidMount() {
         this.handleSearch();
     }
 
     render() {
+        // const taskSelected = this.state.taskSelected;
         let sortKey = this.state.sortKey;
         let items = this.state.items;
 
@@ -70,9 +101,16 @@ class App extends Component {
                     </header>
                 </div>
                 <br />
-                <HeaderBar ahihiSearch={this.handleSearch} ahihiSort={this.handleSort} save={this.addNewTask}/>
+                <HeaderBar
+                    ahihiSearch={this.handleSearch}
+                    ahihiSort={this.handleSort}
+                    save={this.addNewTask}
+                    update={this.updateTask}
+                    taskSelected={this.state.taskSelected}
+                    ref={this.headerBar}
+                />
                 <br />
-                <List items={items} sort={sortKey} deleteTask={this.deleteTask}/>
+                <List items={items} sort={sortKey} delete={this.deleteTask} edit={this.editTask}/>
             </div>
         );
     }

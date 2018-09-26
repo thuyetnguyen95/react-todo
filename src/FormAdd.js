@@ -4,22 +4,51 @@ class FormAdd extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { taskName: '', taskLevel: 0 };
+        this.state = {
+            taskId: null,
+            taskName: '',
+            taskLevel: 0,
+            taskSelected: null
+        };
+    }
+
+    // first way
+    fillTaskToEdit(taskSelected) {
+        this.setState({
+            taskId: taskSelected.id,
+            taskName: taskSelected.name,
+            taskLevel: taskSelected.level
+        })
     }
 
     saveTask = (event) => {
-        if (this.state.taskName) {
+        if (!this.state.taskName) {
+            return event.preventDefault();
+        }
+        if (this.state.taskId) {
+            let task = {
+                id: this.state.taskId,
+                name: this.state.taskName,
+                level: this.state.taskLevel,
+            }
+            this.props.update(task)
+        }
+        if (!this.state.taskId) {
             this.props.save(this.state.taskName, this.state.taskLevel)
-            this.setState({ taskName: '', taskLevel: 0 });
         }
 
+        this.resetForm();
         event.preventDefault();
     }
 
     rejectTask = (event) => {
-        this.setState({ taskName: '', taskLevel: 0 });
+        this.resetForm();
         this.props.cancel();
         event.preventDefault();
+    }
+
+    resetForm = () => {
+        this.setState({ taskId: null, taskName: '', taskLevel: 0 });
     }
 
     handleAddTaskName = (task) => {
@@ -30,7 +59,29 @@ class FormAdd extends Component {
         this.setState({ taskLevel: parseInt(level.target.value, 10) });
     }
 
+    // componentWillReceiveProps() {
+    //     console.log('receive props', this.props.taskSelected);
+    // }
+
+    // componentWillUpdate () {
+    //     console.log('will update', this.props.taskSelected);
+    // }
+
+    // componentWillMount() {
+    //     console.log('will mount', this.props.taskSelected);
+    // }
+
+    // componentDidMount() {
+    //     console.log('did mount', this.props.taskSelected);
+    // }
+
+    // componentDidUpdate() {
+    //     console.log('did update', this.props.taskSelected);
+    // }
+
     render() {
+        // console.log('render', this.props.taskSelected);
+
         return (
             <div className="row">
                 <div className="col-md-8 col-xs-offset-4">
