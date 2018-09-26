@@ -28,7 +28,7 @@ class FormAdd extends Component {
         if (this.state.taskId) {
             let task = {
                 id: this.state.taskId,
-                name: this.state.taskName,
+                name: this.state.taskName.trim(),
                 level: this.state.taskLevel,
             }
             this.props.update(task)
@@ -52,7 +52,7 @@ class FormAdd extends Component {
     }
 
     handleAddTaskName = (task) => {
-        this.setState({ taskName: task.target.value.trim() });
+        this.setState({ taskName: task.target.value });
     }
 
     handleAddLevel = (level) => {

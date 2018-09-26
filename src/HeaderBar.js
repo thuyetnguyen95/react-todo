@@ -72,7 +72,7 @@ class HeaderBar extends Component {
     }
 
     addNewTask = (taskName, taskLevel) => {
-        this.props.save(taskName, taskLevel);
+        this.props.save(taskName.trim(), taskLevel);
         this.toggleFormAdd();
     }
 
