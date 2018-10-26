@@ -17,7 +17,6 @@ class HeaderBar extends Component {
         this.FormAdd = React.createRef();
     }
 
-    // first way
     showFormEdit = (taskSelected) => {
         this.setState({
             isShowForm: true,
