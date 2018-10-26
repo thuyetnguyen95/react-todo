@@ -12,7 +12,6 @@ class FormAdd extends Component {
         };
     }
 
-    // first way
     fillTaskToEdit(taskSelected) {
         this.setState({
             taskId: taskSelected.id,
@@ -59,29 +58,7 @@ class FormAdd extends Component {
         this.setState({ taskLevel: parseInt(level.target.value, 10) });
     }
 
-    // componentWillReceiveProps() {
-    //     console.log('receive props', this.props.taskSelected);
-    // }
-
-    // componentWillUpdate () {
-    //     console.log('will update', this.props.taskSelected);
-    // }
-
-    // componentWillMount() {
-    //     console.log('will mount', this.props.taskSelected);
-    // }
-
-    // componentDidMount() {
-    //     console.log('did mount', this.props.taskSelected);
-    // }
-
-    // componentDidUpdate() {
-    //     console.log('did update', this.props.taskSelected);
-    // }
-
     render() {
-        // console.log('render', this.props.taskSelected);
-
         return (
             <div className="row">
                 <div className="col-md-8 col-xs-offset-4">

@@ -5,18 +5,6 @@ import DummyData from './data';
 import HeaderBar from './HeaderBar';
 import List from './List';
 
-
-/**
- * WamiDev 26-09-2018
- * 
- * I using two different ways for edit function.
- * The first way, I use [ref] for the component, call child's function and passing data (taskSelected) through it.
- * Second way, I use [props] and [state] and passing them to child component (It case is normal).
- * 
- * If You use the first way You can remove some function or some code has comment [second way] because we not using it.
- * And if You use second way You can also do the same as above with comment is [first way].
- */
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -25,11 +13,10 @@ class App extends Component {
             listTask: DummyData.items,
             items: [],
             sortKey: null,
-            taskSelected: null,
             strSearch: '',
         };
 
-        this.headerBar = React.createRef(); // first way
+        this.headerBar = React.createRef();
     }
 
     handleSearch = (strSearch = '') => {
@@ -72,8 +59,7 @@ class App extends Component {
     }
 
     editTask = task => {
-        // this.setState({ taskSelected: task }); // second
-        this.headerBar.current.showFormEdit(task); // first way
+        this.headerBar.current.showFormEdit(task);
     }
 
     deleteTask = task => {
@@ -88,7 +74,6 @@ class App extends Component {
     }
 
     render() {
-        // const taskSelected = this.state.taskSelected;
         let sortKey = this.state.sortKey;
         let items = this.state.items;
 
@@ -106,7 +91,6 @@ class App extends Component {
                     ahihiSort={this.handleSort}
                     save={this.addNewTask}
                     update={this.updateTask}
-                    taskSelected={this.state.taskSelected}
                     ref={this.headerBar}
                 />
                 <br />
